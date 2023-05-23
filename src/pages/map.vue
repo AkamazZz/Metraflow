@@ -259,17 +259,27 @@
         </VCardItem>
     
         <VCardText>
-          <VRow>
-            <VCol>
-              <div class="d-flex align-center justify-center ">
+          <VRow justify="center" aling="center">
+
+            <VCol   cols="12" 
+            md="3"
+            sm="12"
+            class="d-flex align-center justify-center ">
+             
                 <v-switch
                   v-model="enabledLayers"
-                  class="mr-10"
+                  
                   color="primary"
                   label="Routing"
                   value="route"
                   hide-details
                 />
+      
+              </VCol >
+              <VCol  cols="12"
+              md="3"
+              sm="12" class="d-flex align-center justify-center ">
+              
                 <v-switch
                   v-model="enabledLayers"
                   
@@ -278,25 +288,34 @@
                   value="traffic"
                   hide-details
                 />
+              </VCol>
+              <VCol  cols="12"
+              md="3"
+              sm="12" class="d-flex align-center justify-center ">
                 <v-switch
                   v-model="enabledLayers"
-                  class="ml-10"
+            
                   color="error"
                   label="History"
                   value="prediction"
                   hide-details
                 />
+               </VCol>
+                <VCol cols="12"
+                md="3"
+                sm="12" class="d-flex align-center justify-center ">
                 <v-switch
                   v-model="enabledLayers"
-                  class="ml-10"
+                
                   color="#EF6C00"
                   label="Incidents"
                   value="incidents"
                   hide-details
                 />
-                <div class="me-3" />
-              </div>
-            </VCol>
+              </VCol>
+         
+              <!-- </div> -->
+      
           </VRow>
           <VRow>
             <VCol>
