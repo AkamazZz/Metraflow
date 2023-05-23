@@ -8,7 +8,7 @@
     >
       <v-card
       
-        style="height:100%;"
+        style="height:700px;"
       >
         <v-row
           align="center"
