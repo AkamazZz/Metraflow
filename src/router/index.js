@@ -10,4 +10,20 @@ const router = createRouter({
     return { top: 0 }
   },
 })
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('user');
+
+  if(to.name == 'map' || to.name == 'dashboard'){
+
+    if(!token){
+      next({ name: 'login' }); // Redirect to the 404 page
+    }
+
+  }
+
+    next(); // Continue navigation
+
+});
+
 export default router

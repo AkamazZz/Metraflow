@@ -47,16 +47,16 @@ export const useAuthStore = defineStore({
         console.log("logging user")
         const response = await register(user)
       } catch (error) {
-        if (error.response) {
-          console.log(error.response.data)
+        // if (error.response) {
+        //   console.log(error.response.data)
           
-          return error.response.data 
-        } else {
+        //   return error.response.data 
+        // } else {
           
-          console.log(error.detail)
-
-          throw error.detail
-        }
+        //   console.log(error.detail)
+          console.log(error)
+          throw error
+        // }
       }
     },
     async logout() {

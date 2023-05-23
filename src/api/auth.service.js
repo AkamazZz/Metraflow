@@ -25,7 +25,7 @@ export async function login(credentials) {
     
     return response.data
   } catch (error) {
-    console.log(error.response.data)
+    console.log(error.response)
 
     // Check if error.response exists  before trying to access its properties
     if (error.response) {

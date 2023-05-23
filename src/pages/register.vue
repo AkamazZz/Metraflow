@@ -93,7 +93,13 @@ async function handleSubmit() {
   } catch (error) {
     isDisabled.value = false
     console.log(error)
-    toast.error(error, {
+    let parsedString = '';
+
+Object.values(error).every((value) => {
+  parsedString += value + ' ';
+  return true;
+});
+    toast.error(parsedString, {
       position: toast.POSITION.TOP_CENTER,
       transition: toast.TRANSITIONS.ZOOM,
     })
