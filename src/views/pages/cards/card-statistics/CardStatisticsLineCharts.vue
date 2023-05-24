@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
 var trigoStrength = 3
@@ -132,6 +132,104 @@ const chartOptions = computed(() => {
       <h6 class="text-sm text-center font-weight-semibold">
         Total Revenue
       </h6>
+    </VCardText>
+  </VCard>
+</template> -->
+
+<script setup>
+import VueApexCharts from 'vue3-apexcharts'
+import { useTheme } from 'vuetify'
+
+const vuetifyTheme = useTheme()
+const currentTheme = computed(() => vuetifyTheme.current.value.colors)
+const chart = ref(null)
+const  series = [{
+  data: [
+    28,
+   30
+  ],
+}]
+
+const chartOptions = computed(() => {
+  return {
+    grid: {
+      show: false,
+      padding: {
+        left: -2,
+        top: -10,
+      },
+    },
+    
+    chart: {
+      parentHeightOffset: 0,
+      type: 'line',
+      offsetX: -8,
+      dropShadow: {
+        enabled: true,
+        top: 10,
+        blur: 4,
+        color: currentTheme.value.primary,
+        opacity: 0.09,
+      },
+      
+      toolbar: { show: false },
+    },
+    methods: {
+      addData() { 
+        console.log('bruh')
+        chart.value.updateSeries([{data:   [100,98,91,93,111,85,81] }])
+        series[0].data = [5, 15, 8, 10, 16, 34,343,4]
+      },
+    },
+    markers: {
+      size: 6,
+      colors: 'transparent',
+      strokeColors: 'transparent',
+      strokeWidth: 4,
+      discrete: [{
+        seriesIndex: 0,
+        dataPointIndex: series[0].data.length - 1,
+        fillColor: currentTheme.value.surface,
+        strokeColor: currentTheme.value.primary,
+        size: 6,
+      }],
+      hover: { size: 7 },
+    },
+    stroke: {
+      width: 5,
+      curve: 'smooth',
+      lineCap: 'round',
+    },
+    xaxis: {
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      labels: { show: false },
+    },
+    yaxis: { labels: { show: false } },
+    colors: [currentTheme.value.primary],
+  }
+})
+onBeforeMount(() => {
+  setTimeout(() => {
+    chartOptions.value.methods.addData()
+  }, 3000)
+})
+</script>
+
+<template>
+  <VCard>
+    <VCardText>
+      <h6 class="text-h6">
+        Medium number of cars by time
+      </h6>
+      <VueApexCharts
+        ref="chart"
+        :options="chartOptions"
+        :series="series"
+        :height="423"
+      />
+
+
     </VCardText>
   </VCard>
 </template>

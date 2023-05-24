@@ -63,8 +63,8 @@
         <div>
           <ol-map
             ref="map"
-          
             style="height:700px"
+            
           >
             <ol-geolocation
               :projection="projection"

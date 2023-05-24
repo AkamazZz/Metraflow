@@ -97,14 +97,56 @@ export async function getCar(guid, dates) {
 }
 
 export async function getRouteFromApi(point1, point2){
-  console.log(url_osrm_route + point1 + ';' + point2)
+  // console.log(url_osrm_route + point1 + ';' + point2)
   const response = await fetch(url_osrm_route + point1 + ';' + point2)
   const json = await response.json()  
-  console.log(json)
-  console.log(decodeToGeoJSON(json.routes[0].geometry))
+  // console.log(json)
+  // console.log(decodeToGeoJSON(json.routes[0].geometry))
   
   return decodeToGeoJSON(json.routes[0].geometry)
   
+}
+
+export async function getNumberOfCars(){
+  const data = {
+    "1": "2020-12-08",
+    "2": "2020-12-07",
+    "3": "2020-12-13",
+    "4": "2020-12-11",
+    "5": "2020-12-10",
+    "6": "2020-12-09",
+    "7": "2020-12-12"
+  };
+  
+  // Extract the values (dates) from the object
+  const dateArray = Object.values(data);
+  
+  // Sort the array of dates in ascending order
+  dateArray.sort((a, b) => new Date(a) - new Date(b));
+  
+  let answer = []
+  for (const date of dateArray) {
+    const response = await api.get(`/cars/count-cars?date=${date}`)
+    answer.push(response.data)
+  }
+  
+  return answer
+}
+
+export function getNumberOfCaRs(){
+  return  [723
+,
+731
+,
+717
+,
+739
+,
+759
+,
+685
+,
+603]
 }
 
 

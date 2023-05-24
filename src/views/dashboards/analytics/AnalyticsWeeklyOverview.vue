@@ -2,6 +2,8 @@
 import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
+import {getNumberOfCaRs} from '@/api/map.service'
+import {onBeforeMount} from 'vue'
 
 const vuetifyTheme = useTheme()
 const options = computed(() => {
@@ -40,15 +42,15 @@ const options = computed(() => {
       },
     },
     dataLabels: { enabled: false },
-    colors: [
-      currentTheme.value.background,
-      currentTheme.value.background,
-      currentTheme.value.background,
-      currentTheme.value.background,
-      currentTheme.value.primary,
-      currentTheme.value.background,
-      currentTheme.value.background,
-    ],
+    // colors: [
+    //   currentTheme.value.background,
+    //   currentTheme.value.background,
+    //   currentTheme.value.background,
+    //   currentTheme.value.background,
+    //   currentTheme.value.primary,
+    //   currentTheme.value.background,
+    //   currentTheme.value.background,
+    // ],
     states: {
       hover: { filter: { type: 'none' } },
       active: { filter: { type: 'none' } },
@@ -78,22 +80,21 @@ const options = computed(() => {
           colors: disabledColor,
           fontSize: '12px',
         },
-        formatter: value => `${ value > 999 ? `${ (value / 1000).toFixed(0) }` : value }%`,
+        formatter: value => `${ value > 999 ? `${ (value / 1000).toFixed(0) }` : value } cars`,
       },
     },
   }
 })
+
 const traffic = [{
-  data: [
-    37,
-    57,
-    45,
-    51,
-    80,
-    40,
-    65,
-  ],
+  name: 'Traffic',
+  data: getNumberOfCaRs()
 }]
+
+
+onBeforeMount(() => {
+ 
+})
 </script>
 
 <template>
@@ -125,7 +126,7 @@ const traffic = [{
         :series="traffic"
         :height="220"
       />
-
+        <!--
       <div class="d-flex align-center mb-3">
         <h5 class="text-h5 me-4">
           80%
@@ -134,10 +135,12 @@ const traffic = [{
           Big traffic day is on friday.
         </p>
       </div>
+ 
 
       <VBtn block>
         Details
       </VBtn>
+    -->
     </VCardText>
   </VCard>
 </template>

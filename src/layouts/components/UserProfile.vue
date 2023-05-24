@@ -34,7 +34,8 @@ const avatarBadgeProps = {
         offset="14px"
       >
         <VList>
-          <!-- 👉 User Avatar & Name -->
+   
+          <!-- 👉 User Avatar & Name 
           <VListItem>
             <template #prepend>
               <VListItemAction start>
@@ -59,7 +60,7 @@ const avatarBadgeProps = {
           </VListItem>
 
           <VDivider class="my-2" />
-
+        -->
           <!-- 👉 Profile -->
           <VListItem to="/account-settings">
             <template #prepend>

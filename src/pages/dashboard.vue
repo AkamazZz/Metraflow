@@ -20,25 +20,25 @@ import CardStatisticsRadialBarCharts from '@/views/pages/cards/card-statistics/C
 // import CardStatisticsTotalProfiteLineCharts from '@/views/pages/cards/card-statistics/CardStatisticsTotalProfitLineCharts.vue'
 // import CardStatisticsTransations from '@/views/pages/cards/card-statistics/CardStatisticsTransactions.vue'
 
-// import CardStatisticsLineCharts from '@/views/pages/cards/card-statistics/CardStatisticsLineCharts.vue'
+ import CardStatisticsLineCharts from '@/views/pages/cards/card-statistics/CardStatisticsLineCharts.vue'
 
 
-const totalProfit = {
-  title: 'Total Profit',
-  color: 'secondary',
-  icon: 'mdi-poll',
-  stats: '$25.6k',
-  change: 42,
-  subtitle: 'Weekly Project',
-}
-const newProject = {
-  title: 'New Project',
-  color: 'primary',
-  icon: 'mdi-briefcase-variant-outline',
-  stats: '862',
-  change: -18,
-  subtitle: 'Yearly Project',
-}
+// const totalProfit = {
+//   title: 'Total Profit',
+//   color: 'secondary',
+//   icon: 'mdi-poll',
+//   stats: '$25.6k',
+//   change: 42,
+//   subtitle: 'Weekly Project',
+// }
+// const newProject = {
+//   title: 'New Project',
+//   color: 'primary',
+//   icon: 'mdi-briefcase-variant-outline',
+//   stats: '862',
+//   change: -18,
+//   subtitle: 'Yearly Project',
+// }
 </script>
 
 <template>
@@ -80,12 +80,24 @@ const newProject = {
     </VRow>
   -->
   <VRow
-    justify="center"
-    align="center"
+   
   >
-    <VCol>
+    <VCol cols="12">
       <AnalyticsWeeklyOverview />
-      <CardStatisticsRadialBarCharts class="mt-5" />
+
+
     </VCol>
+    <VCol cols="5">
+      <CardStatisticsRadialBarCharts/>
+
+    </VCol>
+    <VCol cols="7">
+      <CardStatisticsLineCharts/>
+    </Vcol>
+
+
   </VRow>
+ 
+    
+
 </template>

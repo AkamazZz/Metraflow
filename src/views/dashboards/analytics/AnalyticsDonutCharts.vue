@@ -1,14 +1,13 @@
 <script setup>
 import { hexToRgb } from '@layouts/utils'
 import VueApexCharts from 'vue3-apexcharts'
-
 import { useTheme } from 'vuetify'
 var colorPalette = ['#00D8B6','#008FFB',  '#FEB019', '#FF4560', '#775DD0']
 
 const vuetifyTheme = useTheme()
 const currentTheme = computed(() => vuetifyTheme.current.value.colors)
 const variableTheme = computed(() => vuetifyTheme.current.value.variables)
-const series = [21,22, 21]
+const series = [78]
 const chartOptions = computed(() => {
   return {
     // chart: { sparkline: { enabled: true } },
@@ -35,6 +34,7 @@ const chartOptions = computed(() => {
     chart: {
       type: 'donut',
       width: '100%',
+      height: 400
   },
   dataLabels: {
     enabled: false,
@@ -48,23 +48,18 @@ const chartOptions = computed(() => {
       offsetY: 20,
     },
     stroke: {
-      colors: [currentTheme.value.surface],
-
+      colors: undefined
     },
     track: { background: currentTheme.value.background },
   },
-  stroke: {
-      colors: [currentTheme.value.surface],
-
-    },
   colors: colorPalette,
-  // title: {
-  //   // text: 'Number of accidents',
-  //   style: {
-  //     fontSize: '18px'
-  //   }
-  // },
-  series: [20, 20, 20],
+  title: {
+    text: 'Number of accidents',
+    style: {
+      fontSize: '18px'
+    }
+  },
+  series: [21, 23, 19],
   labels: ['Car crash', 'Road works', 'Congestion'],
   legend: {
     position: 'left',
@@ -79,25 +74,18 @@ const chartOptions = computed(() => {
   <VCard>
     <VCardText>
       <h6 class="text-h6">
-        Number of accidents
+        Current congestion
       </h6>
-  
-
-          <VueApexCharts
-            :options="chartOptions"
-            :series="series"
-            type="donut"
-            :height="400"
-          />
-  
-
-        <!--
+      <VRow
+        justify="space-around"
+        align="center"
+      >
         <VCol cols="4">
           <VueApexCharts
             id="stats-radial-bar-chart"
             :options="chartOptions"
             :series="series"
-            type="donut"
+            type="radialBar"
             :height="400"
           />
           <h6 class="text-sm text-center font-weight-semibold mt-9">
@@ -109,15 +97,26 @@ const chartOptions = computed(() => {
             id="stats-radial-bar-chart"
             :options="chartOptions"
             :series="series"
-            type="donut"
+            type="radialBar"
             :height="400"
           />
           <h6 class="text-sm text-center font-weight-semibold mt-9">
             Traffic jam percentage
           </h6>
         </VCol>
-        -->
-
+        <VCol cols="4">
+          <VueApexCharts
+            id="stats-radial-bar-chart"
+            :options="chartOptions"
+            :series="series"
+            type="radialBar"
+            :height="400"
+          />
+          <h6 class="text-sm text-center font-weight-semibold mt-9">
+            Traffic jam percentage
+          </h6>
+        </VCol>
+      </VRow>
     </VCardText>
   </VCard>
 </template>
