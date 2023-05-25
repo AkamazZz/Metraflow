@@ -2,7 +2,7 @@
 import VueApexCharts from 'vue3-apexcharts'
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
-import {getNumberOfCaRs} from '@/api/map.service'
+import {getNumberOfCaRs, getNumberOfCars} from '@/api/map.service'
 import {onBeforeMount} from 'vue'
 
 const vuetifyTheme = useTheme()
@@ -71,6 +71,15 @@ const options = computed(() => {
       axisTicks: { show: false },
       axisBorder: { show: false },
     },
+    methods: {
+      addData() { 
+        getNumberOfCars().then((res) => {
+       
+          chart.value.updateSeries([{data:   res }])
+        })
+        
+      },
+    },
     yaxis: {
       show: true,
       tickAmount: 4,
@@ -88,12 +97,13 @@ const options = computed(() => {
 
 const traffic = [{
   name: 'Traffic',
-  data: getNumberOfCaRs()
+  data: []
 }]
 
+const chart = ref(null)
 
 onBeforeMount(() => {
- 
+  options.value.methods.addData()
 })
 </script>
 
@@ -122,6 +132,7 @@ onBeforeMount(() => {
     <VCardText>
       <VueApexCharts
         type="bar"
+        ref="chart"
         :options="options"
         :series="traffic"
         :height="220"

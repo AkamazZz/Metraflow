@@ -1,18 +1,18 @@
 @use "vuetify/lib/styles/settings" as vuetify_settings;
 
-@mixin themed($property, $light-value, $dark-value) {
-  @at-root {
-    .v-theme {
-      &--light {
-        #{$property}: $light-value;
-      }
+// @mixin themed($property, $light-value, $dark-value) {
+//   @at-root {
+//     .v-theme {
+//       &--light {
+//         #{$property}: $light-value;
+//       }
 
-      &--dark {
-        #{$property}: $dark-value;
-      }
-    }
-  }
-}
+//       &--dark {
+//         #{$property}: $dark-value;
+//       }
+//     }
+//   }
+// }
 
 // ℹ️ This mixin is inspired from vuetify for adding hover styles via before pseudo element
 @mixin before-pseudo() {
@@ -31,28 +31,28 @@
   }
 }
 
-// ——— Light background generator ——————— //
-// ℹ️ With this you have to give text color to the component you want light bg
-// e.g. class="avatar-initial text-primary" for primary light bg
-@mixin light-bg-provider($component, $inner-selector: "", $opacity: 0.12) {
-  .#{$component}.#{$component}-light-bg #{$inner-selector} {
-    background-color: transparent !important;
+// // // ——— Light background generator ——————— //
+// // // ℹ️ With this you have to give text color to the component you want light bg
+// // // e.g. class="avatar-initial text-primary" for primary light bg
+// // @mixin light-bg-provider($component, $inner-selector: "", $opacity: 0.12) {
+// //   .#{$component}.#{$component}-light-bg #{$inner-selector} {
+// //     background-color: transparent !important;
 
-    &.bg-static-white {
-      background-color: white !important;
-    }
+// //     &.bg-static-white {
+// //       background-color: white !important;
+// //     }
 
-    &::before {
-      position: absolute;
-      background-color: currentcolor;
-      border-radius: inherit;
-      content: "";
-      inset: 0;
-      opacity: $opacity;
-      pointer-events: none;
-    }
-  }
-}
+// //     &::before {
+// //       position: absolute;
+// //       background-color: currentcolor;
+// //       border-radius: inherit;
+// //       content: "";
+// //       inset: 0;
+// //       opacity: $opacity;
+// //       pointer-events: none;
+// //     }
+// //   }
+// }
 
 @mixin avatar-font-sizes($map: $avatar-sizes) {
   @each $sizeName, $multiplier in vuetify_settings.$size-scales {

@@ -7,7 +7,7 @@ var polyline = import('@mapbox/polyline')
 const url_osrm_route = '//router.project-osrm.org/route/v1/driving/'
 export async function getGuids(){
   const response = await api.get('/cars/guids')
-  console.log(response.data )
+  // console.log(response.data )
   
   return response.data
 }
@@ -19,12 +19,12 @@ export async function addIncident(incident){
 
 export async function getIncidents(date){
   const response = await api.get(`/cars/incidents?sd=${date[1]}&ed=${date[0]}`)
-  console.log(`/cars/incidents?sd=${date[0]}&ed=${date[1]}`)
+  // console.log(`/cars/incidents?sd=${date[0]}&ed=${date[1]}`)
   
   return response.data
 }
 export async function getTrafficCongestion(number){
-  console.log("number: " , number)
+  // console.log("number: " , number)
   
   const response = await axios.get(`http://34.118.42.3:5000/road_loads_geojson?date=${number}`, {
     headers: {
@@ -34,14 +34,14 @@ export async function getTrafficCongestion(number){
     },
     timeout: 10000,
   })
-  console.log(response.data )
+  // console.log(response.data )
   
   return response.data
 }
 export async function getCar(guid, dates) {
   const gui = guid
   const date = dates
-  console.log(`/cars?guid=${gui}&sd=${date[0]}&ed=${date[1]}`)
+  // console.log(`/cars?guid=${gui}&sd=${date[0]}&ed=${date[1]}`)
   const response = await api.get(`/cars?guid=${gui}&sd=${date[0]}&ed=${date[1]}`)
 
   // const response = await api.get('/cars?guid=712070869093788000&sd=2020-12-08%2011:17:00&ed=2020-12-09%2011:20:00')
@@ -55,17 +55,17 @@ export async function getCar(guid, dates) {
   var prev=[]
   if(response.data.length > 0){
     for (var i = 0; i < response.data.length; i++) {
-      console.log(prev)
+      // console.log(prev)
       if(i>1){
         coordinates.push([parseFloat(prev[0]), parseFloat(prev[1])]  )
       }
       var point = response.data[i]
-      console.log(point)
+      // console.log(point)
 
       // Add the latitude and longitude to the coordinate array
       coordinates.push([parseFloat(point.longitude), parseFloat(point.latitude)])
-      console.log("I= " + i + "")
-      console.log(point)
+      // console.log("I= " + i + "")
+      // console.log(point)
       if(coordinates.length == 2 ){
         var feature = {
           type: 'Feature',
@@ -81,7 +81,7 @@ export async function getCar(guid, dates) {
         }
         const val = await getRouteFromApi(coordinates[0], coordinates[1])
         prev=coordinates[1]
-        console.log(val.coordinates )
+        // console.log(val.coordinates    )
         feature.geometry.coordinates.push(val.coordinates)
         geojson.features.push(feature)
         coordinates = []
@@ -131,22 +131,6 @@ export async function getNumberOfCars(){
   }
   
   return answer
-}
-
-export function getNumberOfCaRs(){
-  return  [723
-,
-731
-,
-717
-,
-739
-,
-759
-,
-685
-,
-603]
 }
 
 
@@ -206,3 +190,45 @@ export function getNumberOfCaRs(){
   
 //   return {rawJson: response.data , carGeoJson: geojson}
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function getNumberOfCaRs(){
+  return  [723
+,
+731
+,
+717
+,
+739
+,
+759
+,
+685
+,
+603]
+}
+

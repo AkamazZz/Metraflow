@@ -463,6 +463,7 @@ import crashIcon from '@/assets/images/map/report/crash.png'
 
 
 import streetInfo from "@/views/modal/streetInfo.vue"
+import CarTypeList from "../views/cars/carList.vue"
 import tokenService from "../api/token.service"
 import { toast } from "vue3-toastify"
 import router from "../router/index"
@@ -470,7 +471,6 @@ import router from "../router/index"
 import { ref, inject , onMounted, onBeforeMount } from "vue"
 
 
-import CarTypeList from "../views/cars/carList.vue"
 const date = ref([new Date(), new Date()])
 const listGenerated = ref(false)
 const formatedDate = ref([])
@@ -490,71 +490,11 @@ function modalClosed(){
   modalStreetInfo.value = false
 }
 
-const getRandomInRange = (from, to, fixed) => {
-  return (Math.random() * (to - from) + from).toFixed(fixed) * 1
-}
-
 const featureSelected = event => {
-  // type of feature
-  console.log(event.selected[0].getGeometry()) 
-  console.log(event.selected[0].getProperties().geometry.getCoordinates()) 
   clusterSelecterCoordinates.value=event.selected[0].getProperties().geometry.getCoordinates()
   modalStreetInfo.value = true
 }
 
-// const overrideClustureStyleFunction = (feature, style) => {
-//   // console.log(feature )
-//   let clusteredFeatures = feature.get("features")
-
-//   console.log(feature)  
-//   console.log(style)
-//   console.log(clusteredFeatures[0].getProperties())
-
-//   // console.log( clusteredFeatures)
-//   let size = clusteredFeatures.length
-
-//   // if(size>1){
-//   //   let color = size > 20 ? "192,0,0" : size > 8 ? "255,128,0" : "0,128,0"
-//   //   var radius = Math.max(8, Math.min(size, 20))
-//   //   let dash = (2 * Math.PI * radius) / 6
-//   //   let calculatedDash = [0, dash, dash, dash, dash, dash, dash]
-
-//   //   style.getStroke().setLineDash(dash)
-//   //   style
-
-//   //     .getStroke()
-//   //     .setColor("rgba(" + color + ",0.5)")
-//   //   style.getImage().getStroke().setLineDash(calculatedDash)
-//   //   style
-  
-//   //     .getFill()
-//   //     .setColor("rgba(" + color + ",1)")
-
-//   //   style.getImage().setRadius(radius)
-//   //   console.log(style)
-
-//   //   // style.getText().setText(size.toString())
-//   // }else{
-//   //   let color = size > 20 ? "192,0,0" : size > 8 ? "255,128,0" : "0,128,0"
-//   //   var radius = Math.max(8, Math.min(size, 20))
-//   //   let dash = (2 * Math.PI * radius) / 6
-//   //   let calculatedDash = [0, dash, dash, dash, dash, dash, dash]
-
-//   //   style.getImage().getStroke().setLineDash(dash)
-//   //   style
-//   //     .getStroke()
-//   //     .setColor("rgba(" + color + ",0.5)")
-//   //   style.getImage().getStroke().setLineDash(calculatedDash)
-//   //   style
-//   //     .getImage()
-//   //     .getFill()
-//   //     .setColor("rgba(" + color + ",1)")
-
-//   //   style.getImage().setRadius(radius)
-//   style.setImage(congestionIcon)
-   
-//   // }
-// }
 
 // Add function to add or delete specific layers
 watch(enabledLayers, (newArray, oldArray) => {
@@ -704,16 +644,6 @@ onBeforeMount(async () => {
   await resetTime()
   guids.value = await getGuids()
   await loadTrafficCongestion()
-
-  // console.log(guids.value)
-
-  //   console.log(`the component is now mounted.`)
-  //   geoLocChange.value = loc => {
-  //     console.log(loc); view.value.fit([loc[0], loc[1], loc[0], loc[1]], { maxZoom:
-  // 14 }) } 
-
-
-  // await createRouteForCar()
   
 })
 const heatmapWeight = function (feature) {
@@ -873,17 +803,12 @@ const drawstart = event => {
   fetch(url_osrm_route + point1 + ';' + point2).then(function(r) { 
     return r.json()
   }).then(function(json) {
-    console.log(json.routes[0])
+    // console.log(json.routes[0])
     createRoute(json.routes[0].geometry)
   })
 
-  // routeDrawedMarkers.value.push(event.feature)
-  // console.log(routeDrawedMarkers.value  )
 }
 
-const drawend = event => {
-  console.log(event)
-}
 
 
 function createRoute(polyline) {
@@ -929,9 +854,7 @@ async function createRouteForCar(guid, date) {
     iconFeature[0].setId('historyRouteIcon')
     route[0].setId('historyRoute')
 
-    // console.log(route)
-    // console.log(carGeoJson.features[0].geometry.coordinates[0][0]  )
-    
+
     // adding a feature to the vector layer source with history
     historyRouteIconVector.value.source.addFeature(iconFeature[0])
     historyRouteVectors.value.source.addFeatures(route)
@@ -962,17 +885,11 @@ async function createRouteForCar(guid, date) {
   
 
 }
-function clearRouteVectors() {
-  routeVectors.value.source.clear()
-  routePoints.value = []
-  console.log(routePoints.value)
-}
 
 watch(historySlider, currentIndex =>{
   const coordinates = getCoordinateAtIndex(carHistoryRouteInfo.value, currentIndex)
 
-  // console.log(coordinates)
-  // console.log(historyRouteIconVector.value.source.getFeatureById('historyRouteIcon'))
+
   const feature = historyRouteIconVector.value.source.getFeatureById('historyRouteIcon')
   var newGeometry = new  geom.Point(coordinates)
   feature.setGeometry(newGeometry)
@@ -980,7 +897,7 @@ watch(historySlider, currentIndex =>{
 
   // view.value.animate({center: [coordinates[0], coordinates[1]]})
 
-  // console.log(historyRouteIconVector.value.source.getFeatureById('historyRouteIcon')  )
+
 
 })
 

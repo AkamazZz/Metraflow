@@ -145,8 +145,7 @@ const currentTheme = computed(() => vuetifyTheme.current.value.colors)
 const chart = ref(null)
 const  series = [{
   data: [
-    28,
-   30
+   0,1 
   ],
 }]
 
