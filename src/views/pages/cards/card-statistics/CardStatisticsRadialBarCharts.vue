@@ -44,6 +44,45 @@ const chartOptions = computed(() => {
       customScale: 0.8,
       donut: {
         size: '75%',
+        
+        labels: {
+          show:true,
+          name: {
+          show: true,
+          fontSize: '22px',
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          fontWeight: 600,
+          color: undefined,
+          offsetY: -10,
+          formatter: function (val) {
+            return val
+          }
+        },
+          value: {
+          show: true,
+          fontSize: '25px',
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          fontWeight: 400,
+          offsetY: 16,
+          formatter: function (val) {
+            return val + '%'
+          }
+        },
+        total: {
+          show: true,
+          showAlways: true,
+          label: 'Total',
+          fontSize: '28px',
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          fontWeight: 600,
+          color: '#373d3f',
+          formatter: function (w) {
+            return w.globals.seriesTotals.reduce((a, b) => {
+              return a + b
+            }, 0) + ' of incidents'
+          },
+        },
+      },
       },
       offsetY: 20,
     },

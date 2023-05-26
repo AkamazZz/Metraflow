@@ -41,6 +41,7 @@ const options = computed(() => {
         bottom: 5,
       },
     },
+
     dataLabels: { enabled: false },
     // colors: [
     //   currentTheme.value.background,
@@ -82,6 +83,8 @@ const options = computed(() => {
     },
     yaxis: {
       show: true,
+      min: 560,
+    max: 800,
       tickAmount: 4,
       labels: {
         offsetX: -17,
