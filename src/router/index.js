@@ -16,7 +16,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = tokenService.getUser().access
+  const token = tokenService.getUser() ? tokenService.getUser().access : null
   const decoded = token ? jwt_decode(token) : null
   if(decoded != null  ){
     if (decoded.exp < (new Date().getTime() + 1) / 1000) {
@@ -28,8 +28,8 @@ router.beforeEach((to, from, next) => {
   }
   if(to.name == 'map' || to.name == 'dashboard'){
 
-    if(!token){
-      next({ name: 'login' }) // Redirect to the 404 page
+    if(!decoded){
+      next({ name: '/login' }) // Redirect to the 404 page
     }
 
   }
