@@ -16,22 +16,23 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = tokenService.getUser() ? tokenService.getUser().access : null
-  const decoded = token ? jwt_decode(token) : null
-  if(decoded != null  ){
-    if (decoded.exp < (new Date().getTime() + 1) / 1000) {
+  
+  if(to.name == 'map' || to.name == 'dashboard'){
+    const token = tokenService.getUser() ? tokenService.getUser().access : null
+    if(token === null){
+      next({ name: 'login' }) // Redirect to the login page
+      
+      return
+    }
+    const decoded = jwt_decode(token) 
+    const tokenExpired = tokenService.checkTokenExpiration(decoded.exp)
+    if( tokenExpired === null && tokenExpired ){
       TokenService.removeUser()
       next({ name: '/login' }) // Redirect to the login page
       
       return 
     }
-  }
-  if(to.name == 'map' || to.name == 'dashboard'){
-
-    if(!decoded){
-      next({ name: '/login' }) // Redirect to the 404 page
-    }
-
+   
   }
 
   next() // Continue navigation
