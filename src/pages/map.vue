@@ -49,7 +49,7 @@
           :is-route-enabled="showPredLayer"
           :car-types="guids"
           :items-per-page="5"
-          :is-disabled="listGenerated"
+          :is-disabled="historyCarListGenerated"
           @select="onCarTypeSelect"
         />
       </v-card>  
@@ -64,7 +64,6 @@
           <ol-map
             ref="map"
             style="height:700px"
-            
           >
             <ol-geolocation
               :projection="projection"
@@ -86,7 +85,7 @@
                 <ol-source-osm />
               </ol-tile-layer>  
 
-              
+             
               <ol-interaction-clusterselect
                 v-if="showTrafficLayer && !showRouteLayer"
                 
@@ -259,63 +258,72 @@
         </VCardItem>
     
         <VCardText>
-          <VRow justify="center" aling="center">
-
-            <VCol   cols="12" 
-            md="3"
-            sm="12"
-            class="d-flex align-center justify-center ">
-             
-                <v-switch
-                  v-model="enabledLayers"
-                  
-                  color="primary"
-                  label="Routing"
-                  value="route"
-                  hide-details
-                />
-      
-              </VCol >
-              <VCol  cols="12"
+          <VRow
+            justify="center"
+            aling="center"
+          >
+            <VCol
+              cols="12" 
               md="3"
-              sm="12" class="d-flex align-center justify-center ">
-              
-                <v-switch
-                  v-model="enabledLayers"
+              sm="12"
+              class="d-flex align-center justify-center "
+            >
+              <v-switch
+                v-model="enabledLayers"
                   
-                  color="success"
-                  label="Traffic"
-                  value="traffic"
-                  hide-details
-                />
-              </VCol>
-              <VCol  cols="12"
+                color="primary"
+                label="Routing"
+                value="route"
+                hide-details
+              />
+            </VCol>
+            <VCol
+              cols="12"
               md="3"
-              sm="12" class="d-flex align-center justify-center ">
-                <v-switch
-                  v-model="enabledLayers"
+              sm="12"
+              class="d-flex align-center justify-center "
+            >
+              <v-switch
+                v-model="enabledLayers"
+                  
+                color="success"
+                label="Traffic"
+                value="traffic"
+                hide-details
+              />
+            </VCol>
+            <VCol
+              cols="12"
+              md="3"
+              sm="12"
+              class="d-flex align-center justify-center "
+            >
+              <v-switch
+                v-model="enabledLayers"
             
-                  color="error"
-                  label="History"
-                  value="prediction"
-                  hide-details
-                />
-               </VCol>
-                <VCol cols="12"
-                md="3"
-                sm="12" class="d-flex align-center justify-center ">
-                <v-switch
-                  v-model="enabledLayers"
+                color="error"
+                label="History"
+                value="prediction"
+                hide-details
+              />
+            </VCol>
+            <VCol
+              cols="12"
+              md="3"
+              sm="12"
+              class="d-flex align-center justify-center "
+            >
+              <v-switch
+                v-model="enabledLayers"
                 
-                  color="#EF6C00"
-                  label="Incidents"
-                  value="incidents"
-                  hide-details
-                />
-              </VCol>
+                color="#EF6C00"
+                label="Incidents"
+                value="incidents"
+                hide-details
+              />
+            </VCol>
          
-              <!-- </div> -->
-      
+            <!-- </div> -->
           </VRow>
           <VRow>
             <VCol>
@@ -471,114 +479,6 @@ import router from "../router/index"
 import { ref, inject , onMounted, onBeforeMount } from "vue"
 
 
-const date = ref([new Date(), new Date()])
-const listGenerated = ref(false)
-const formatedDate = ref([])
-
-const enabledLayers=ref(["prediction", "traffic", "route", "incidents"  ])
-const showPredLayer = ref(true)
-const showTrafficLayer = ref(true)
-const showRouteLayer = ref(true)
-const showIncidentLayer = ref(true)
-const currentIconOfCar=ref(redCarPlaceholder)
-
-const clusterSelecterCoordinates=ref([])
-const modalStreetInfo = ref(false)
-let copyOfRouteLayer=null
-
-function modalClosed(){
-  modalStreetInfo.value = false
-}
-
-const featureSelected = event => {
-  clusterSelecterCoordinates.value=event.selected[0].getProperties().geometry.getCoordinates()
-  modalStreetInfo.value = true
-}
-
-
-// Add function to add or delete specific layers
-watch(enabledLayers, (newArray, oldArray) => {
-  // Check if a value was added
-  if (newArray.length > oldArray.length) {
-    const addedValue = newArray[newArray.length - 1]
-
-    // Call a function for adding a value
-    if(addedValue == 'prediction'){
-      showPredLayer.value = true
-    }
-    else if(addedValue == 'traffic'){
-      showTrafficLayer.value = true
-
-      setTimeout(() => {
-       
-        var features = clusterDeepCopyFeatures
-        features = features.filter(feature => { 
-    
-          return feature.get('time') === trafficSlider.value},
-        )
-        trafficSource.value.source.addFeatures(features)
-        trafficSource.value.source.changed()
-      }, 50 )
-   
-    }
-    else if(addedValue == 'route'){
-      showRouteLayer.value = true   
-
-    }else if(addedValue == 'incidents'){
-      showIncidentLayer.value = true   
-      setTimeout(() => {
-       
-        addIncidentFeatures()
-      }, 50 )
-    }
-  }
-
-  // Check if a value was deleted
-  else if (newArray.length < oldArray.length) {
-    const deletedValue = oldArray.find(value => !newArray.includes(value))
-
-    // Call a function for deleting a value
-    if(deletedValue == 'prediction'){
-      showPredLayer.value = false
-      historySlider.value = 0
-    }
-    else if(deletedValue == 'traffic'){
-      showTrafficLayer.value = false
-
-    }
-    else if(deletedValue == 'route'){
-      copyOfRouteLayer = routeVectors.value.source
-      console.log(copyOfRouteLayer)
-      showRouteLayer.value = false 
-      console.log(copyOfRouteLayer)
-      routeVectors.value = copyOfRouteLayer
-      console.log(routeVectors.value)
-      routePoints.value=[]
-
-    } else if(deletedValue == 'incidents'){
-      showIncidentLayer.value = false   
-
-    }
-  }
-})
-async function clearLayers(){
-  enabledLayers.value = []
-  showPredLayer.value = false
-  showRouteLayer.value = false
-  showTrafficLayer.value = false
-}
-
-watch(date, newDate => {
-  let formattedDates = newDate.map(date => {
-    let d = new Date(date)
-    
-    return `${d.getUTCFullYear()}-${('0' + (d.getUTCMonth() + 1)).slice(-2)}-${('0' + d.getUTCDate()).slice(-2)}%20${('0' + d.getUTCHours()).slice(-2)}:${('0' + d.getUTCMinutes()).slice(-2)}:${('0' + d.getUTCSeconds()).slice(-2)}`
-  })
-  formatedDate.value = formattedDates
-  console.log(formatedDate.value)
-})
-
-
 import {getCar, getGuids, getTrafficCongestion, getIncidents} from '../api/map.service' 
 import {createPointFeature, getCoordinateAtIndex, countCoordinates} from '../utils/map.utils'
 
@@ -599,8 +499,82 @@ const geoLocChange = ref(null)
 const guids = ref([],
 )
 const selectedCarTypeGuid=ref("")
+
+const date = ref([new Date(), new Date()])
+const historyCarListGenerated = ref(false)
+const formatedDate = ref([])
+
+const enabledLayers=ref(["prediction", "traffic", "route", "incidents"  ])
+const showPredLayer = ref(true)
+const showTrafficLayer = ref(true)
+const showRouteLayer = ref(true)
+const showIncidentLayer = ref(true)
+
+const currentIconOfCar=ref(redCarPlaceholder)
+
+
+const geom = inject('ol-geom')
+
+
+const swipeControl=ref(null)
+
+const clusterSelecterCoordinates=ref([])
+const modalStreetInfo = ref(false)
+let copyOfRouteLayer=null
+
+
+const center = ref([71.41657224366838, 51.115236671774746])
+const projection = ref("EPSG:4326")
+const zoom = ref(12)
+const rotation = ref(0)
+const routeDrawedMarkers = ref({})
+const drawEnable = ref(true)
+const drawType = ref("Point")
+const congestionSource = ref(null)
+
+const routeVectors = ref(null)
+const historyRouteIconVector = ref(null)
+const historyRouteVectors = ref(null)
+const trafficSource = ref(null) // traffic incidents
+const roadClosureSource = ref(null) // road closure incidents
+const crashSource = ref(null)  // crash incidents
+const incidentFeatures=ref(null) // holds all the incidents
+const clusterFeatures = ref(null) // Heatmap clusters of traffic congestion on map
+let clusterDeepCopyFeatures=null // deep copy of heatmap
+let clustersArray=[]
+const trafficDay = ref('Mon') // current day
+const routePoints = ref([] )
+const carHistoryRouteInfo = ref([])
+
+const isTrafficLoading = ref(true)
+
+const format = inject("ol-format")
+const feature = inject("ol-feature")
+
+
+function modalClosed(){
+  modalStreetInfo.value = false
+}
+
+const featureSelected = event => {
+  clusterSelecterCoordinates.value=event.selected[0].getProperties().geometry.getCoordinates()
+  modalStreetInfo.value = true
+}
+
+
+
+async function clearLayers(){
+  enabledLayers.value = []
+  showPredLayer.value = false
+  showRouteLayer.value = false
+  showTrafficLayer.value = false
+}
+
+
+
+
 async function onCarTypeSelect(guid) {
-  listGenerated.value = true
+  historyCarListGenerated.value = true
   
   try{  
     if(historyRouteVectors.value !== undefined && historyRouteVectors.value !== null ){
@@ -612,15 +586,12 @@ async function onCarTypeSelect(guid) {
     selectedCarTypeGuid.value = guid
     console.log(guid)
     await createRouteForCar(guid, formatedDate.value)
-    listGenerated.value = false
+    historyCarListGenerated.value = false
   }catch(e){
     console.log(e)
-    listGenerated.value = false
+    historyCarListGenerated.value = false
   }
 
-  // getCar(guid, formatedDate.value)
-
-  // You can call any other functions here using selectedCarTypeGuid.value
 }
 
 async function resetTime(){
@@ -628,8 +599,6 @@ async function resetTime(){
   const endDate = new Date('2020-12-08, 21:00')
   console.log(startDate)
 
-  // const startDate = new Date()
-  // const endDate = new Date(new Date().setDate(startDate.getDate() + 7))
   let formattedDates = [startDate, endDate  ].map(date => {
     let d = new Date(date)
     
@@ -651,7 +620,7 @@ const heatmapWeight = function (feature) {
   const name = feature.get("load")
   const magnitude = parseFloat(name)
   
-  return magnitude*0.08
+  return magnitude*0.06
 }
 async function loadTrafficCongestion(){
   clusterFeatures.value = await getTrafficCongestion('1')
@@ -701,34 +670,6 @@ function getDayNumber(dayName) {
   return -1 // Return -1 if the day name is not found
 }
 
-const center = ref([71.41657224366838, 51.115236671774746])
-const projection = ref("EPSG:4326")
-const zoom = ref(12)
-const rotation = ref(0)
-const routeDrawedMarkers = ref({})
-const drawEnable = ref(true)
-const drawType = ref("Point")
-const congestionSource = ref(null)
-
-// const source = inject("ol-source")
-const routeVectors = ref(null)
-const historyRouteIconVector = ref(null)
-const historyRouteVectors = ref(null)
-const trafficSource = ref(null)
-const roadClosureSource = ref(null)
-const crashSource = ref(null)
-const incidentFeatures=ref(null)
-const clusterFeatures = ref(null)
-let clusterDeepCopyFeatures=null
-let clustersArray=[]
-const trafficDay = ref('Mon')
-const routePoints = ref([] )
-const carHistoryRouteInfo = ref([])
-
-const isTrafficLoading = ref(true)
-
-const format = inject("ol-format")
-const feature = inject("ol-feature")
 
 
 async function addIncidentFeatures(){
@@ -784,8 +725,7 @@ async function createIncidentFeatures(){
 
 }
 
-// const olStyle = inject("ol-style")
-const geom = inject('ol-geom')
+
 const drawstart = event => {
   var coord_street = event.feature.getGeometry().getCoordinates()
   console.log(coord_street)
@@ -886,6 +826,18 @@ async function createRouteForCar(guid, date) {
 
 }
 
+// subscribe to changes of the date hence formate the date and save it into formatedDate
+watch(date, newDate => {
+  let formattedDates = newDate.map(date => {
+    let d = new Date(date)
+    
+    return `${d.getUTCFullYear()}-${('0' + (d.getUTCMonth() + 1)).slice(-2)}-${('0' + d.getUTCDate()).slice(-2)}%20${('0' + d.getUTCHours()).slice(-2)}:${('0' + d.getUTCMinutes()).slice(-2)}:${('0' + d.getUTCSeconds()).slice(-2)}`
+  })
+  formatedDate.value = formattedDates
+  console.log(formatedDate.value)
+})
+
+// Subscribe to changes of the history slider 
 watch(historySlider, currentIndex =>{
   const coordinates = getCoordinateAtIndex(carHistoryRouteInfo.value, currentIndex)
 
@@ -901,6 +853,7 @@ watch(historySlider, currentIndex =>{
 
 })
 
+// Subscribe to changes of the hour chosen by user
 watch(trafficSlider, currentIndex =>{
   trafficSource.value.source.clear()
   const feature = clusterDeepCopyFeatures
@@ -914,7 +867,7 @@ watch(trafficSlider, currentIndex =>{
   trafficSource.value.source.changed()
 
   
-
+// Subscribe to changes of the day chosen by the user
 })
 watch(trafficDay, newDay => {
   // console.log(newDay)
@@ -930,30 +883,84 @@ watch(trafficDay, newDay => {
 
   // console.log(feature)
 })
+
+// Subscribe to changes of the enabled layers and do something on add or delete
+watch(enabledLayers, (newArray, oldArray) => {
+  // Check if a value was added
+  if (newArray.length > oldArray.length) {
+    const addedValue = newArray[newArray.length - 1]
+
+    // Call a function for adding a value
+    if(addedValue == 'prediction'){
+      showPredLayer.value = true
+    }
+    else if(addedValue == 'traffic'){
+      showTrafficLayer.value = true
+
+      setTimeout(() => {
+       
+        var features = clusterDeepCopyFeatures
+        features = features.filter(feature => { 
+    
+          return feature.get('time') === trafficSlider.value},
+        )
+        trafficSource.value.source.addFeatures(features)
+        trafficSource.value.source.changed()
+      }, 50 )
+   
+    }
+    else if(addedValue == 'route'){
+      showRouteLayer.value = true   
+
+    }else if(addedValue == 'incidents'){
+      showIncidentLayer.value = true   
+      setTimeout(() => {
+       
+        addIncidentFeatures()
+      }, 50 )
+    }
+  }
+
+  // Check if a value was deleted
+  else if (newArray.length < oldArray.length) {
+    const deletedValue = oldArray.find(value => !newArray.includes(value))
+
+    // Call a function for deleting a value
+    if(deletedValue == 'prediction'){
+      showPredLayer.value = false
+      historySlider.value = 0
+    }
+    else if(deletedValue == 'traffic'){
+      showTrafficLayer.value = false
+
+    }
+    else if(deletedValue == 'route'){
+      copyOfRouteLayer = routeVectors.value.source
+      console.log(copyOfRouteLayer)
+      showRouteLayer.value = false 
+      console.log(copyOfRouteLayer)
+      routeVectors.value = copyOfRouteLayer
+      console.log(routeVectors.value)
+      routePoints.value=[]
+
+    } else if(deletedValue == 'incidents'){
+      showIncidentLayer.value = false   
+
+    }
+  }
+})
 </script>
 
 
 <style>
-.scrollable-list {
-  max-height: 100%;
-  overflow-y: auto;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-.scrollable-list::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Opera */
-}
-
-
 .ol-zoom {
 
   order: 1; /* adjust as needed */
   margin: 0.5em; /* adjust as needed */
 }
 .ol-zoom button {
-  width: 3vh;
-  height: 3vh;
+  width: 30px;
+  height: 30px;
  
   font-size: 1.5vh;
 }
