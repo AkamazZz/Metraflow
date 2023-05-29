@@ -1,5 +1,4 @@
 <script setup>
-
 // import AnalyticsAward from '@/views/dashboards/analytics/AnalyticsAward.vue'
 
 // import AnalyticsBarCharts from '@/views/dashboards/analytics/AnalyticsBarCharts.vue'
@@ -20,7 +19,7 @@ import CardStatisticsRadialBarCharts from '@/views/pages/cards/card-statistics/C
 // import CardStatisticsTotalProfiteLineCharts from '@/views/pages/cards/card-statistics/CardStatisticsTotalProfitLineCharts.vue'
 // import CardStatisticsTransations from '@/views/pages/cards/card-statistics/CardStatisticsTransactions.vue'
 
- import CardStatisticsLineCharts from '@/views/pages/cards/card-statistics/CardStatisticsLineCharts.vue'
+import CardStatisticsLineCharts from '@/views/pages/cards/card-statistics/CardStatisticsLineCharts.vue'
 
 
 // const totalProfit = {
@@ -79,25 +78,21 @@ import CardStatisticsRadialBarCharts from '@/views/pages/cards/card-statistics/C
     </VCol>
     </VRow>
   -->
-  <VRow
-   
-  >
+  <VRow>
     <VCol cols="12">
       <AnalyticsWeeklyOverview />
-
-
     </VCol>
     <VCol cols="5">
-      <CardStatisticsRadialBarCharts/>
-
+      <CardStatisticsRadialBarCharts />
     </VCol>
     <VCol cols="7">
-      <CardStatisticsLineCharts/>
+      <CardStatisticsLineCharts />
     </Vcol>
-
-
   </VRow>
- 
-    
-
 </template>
+
+
+<route lang="yaml">
+  meta:
+    requiresAuth: true
+  </route>

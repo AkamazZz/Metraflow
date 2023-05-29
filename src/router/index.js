@@ -16,8 +16,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  
-  if(to.name == 'map' || to.name == 'dashboard'){
+  if(to.meta.requiresAuth){
     const token = tokenService.getUser() ? tokenService.getUser().access : null
     if(token === null){
       next({ name: 'login' }) // Redirect to the login page
@@ -25,9 +24,11 @@ router.beforeEach((to, from, next) => {
       return 
     }
     const decoded = jwt_decode(token) 
-    console.log(decoded)
+
+    // console.log(decoded)
     const tokenExpired = tokenService.checkTokenExpiration(decoded.exp)
-    console.log(tokenExpired)
+
+    // console.log(tokenExpired)
     if( tokenExpired ){
       TokenService.removeUser()
       next({ name: 'login' }) // Redirect to the login page

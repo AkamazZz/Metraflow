@@ -94,12 +94,12 @@ export default {
     margin: 0 auto;
   }
   </style>
-  In this example, we use the v-expansion-panel component from Vuetify to create collapsible panels for each FAQ item. The FAQ data is stored in the faqs array in the component's data. You can add or modify FAQ items by updating the faqs array.
-  
-  The v-expansion-panels component uses the accordion prop to ensure that only one panel can be open at a time. Each v-expansion-panel consists of a v-expansion-panel-header and a v-expansion-panel-content. The question is displayed in the header, and the answer is displayed in the content when the panel is expanded.
-  
-  Feel free to customize the styling and content as per your needs. Remember to install Vue.js, Vuetify, and their dependencies in your project before using this code.
-  
+
+
+<route lang="yaml">
+meta:
+  requiresAuth: false
+</route>
   
   
   

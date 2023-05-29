@@ -607,7 +607,6 @@ async function resetTime(){
   date.value = [startDate, endDate]
   formatedDate.value = formattedDates
 
-  // console.log(date.value[0])
 }
 onBeforeMount(async () => {
   await resetTime()
@@ -717,12 +716,10 @@ async function createIncidentFeatures(){
     }
   })
   var fetchedIncidentsGeoJSON = new format.GeoJSON({
-
   }).readFeatures( {type: 'FeatureCollection',
     features: answer })
   incidentFeatures.value = fetchedIncidentsGeoJSON
   await addIncidentFeatures()
-
 }
 
 
@@ -978,3 +975,8 @@ watch(enabledLayers, (newArray, oldArray) => {
   font-size: 1.5vh;
 }
 </style>
+
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>

@@ -196,7 +196,9 @@ async function handleSubmit() {
     @use "@core/scss/pages/page-auth.scss";
     </style>
 
-    <route lang="yaml">
-      meta:
-        layout: blank
-      </route>  
+<route lang="yaml">
+meta:
+  layout: blank
+  requiredAuth: false
+</route>  
+      

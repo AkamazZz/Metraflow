@@ -90,14 +90,13 @@ const tabs = [
       <VWindowItem value="security">
         <AccountSettingsSecurity />
       </VWindowItem>
-
-     
-    
     </VWindow>
   </div>
 </template>
 
+
 <route lang="yaml">
 meta:
   navActiveLink: pages-account-settings-tab
+  requiresAuth: false
 </route>

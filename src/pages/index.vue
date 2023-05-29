@@ -445,3 +445,8 @@ export default {
     position: relative;
   }
   </style>
+
+<route lang="yaml">
+  meta:
+    requiresAuth: false
+</route>
