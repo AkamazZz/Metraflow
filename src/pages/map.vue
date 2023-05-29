@@ -694,13 +694,13 @@ async function createIncidentFeatures(){
     
     return `${d.getUTCFullYear()}-${('0' + (d.getUTCMonth() + 1)).slice(-2)}-${('0' + d.getUTCDate()).slice(-2)}%20${('0' + d.getUTCHours()).slice(-2)}:${('0' + d.getUTCMinutes()).slice(-2)}:${('0' + d.getUTCSeconds()).slice(-2)}`
   })
-  var a = await getIncidents(formattedDates)
+  var fetchedIncidents = await getIncidents(formattedDates)
   
   crashSource.value.source.clear()
   congestionSource.value.source.clear()
   roadClosureSource.value.source.clear()
 
-  var answer = a.map(item => {
+  var answer = fetchedIncidents.map(item => {
     const coordinates = item.geometry.coordinates.map(parseFloat)
     
     return {
@@ -716,11 +716,11 @@ async function createIncidentFeatures(){
       },
     }
   })
-  var geo = new format.GeoJSON({
+  var fetchedIncidentsGeoJSON = new format.GeoJSON({
 
   }).readFeatures( {type: 'FeatureCollection',
     features: answer })
-  incidentFeatures.value = geo
+  incidentFeatures.value = fetchedIncidentsGeoJSON
   await addIncidentFeatures()
 
 }
@@ -799,7 +799,9 @@ async function createRouteForCar(guid, date) {
     historyRouteIconVector.value.source.addFeature(iconFeature[0])
     historyRouteVectors.value.source.addFeatures(route)
     const featureT = historyRouteIconVector.value.source.getFeatureById('historyRouteIcon')
+
     var newGeometry = new  geom.Point(point)
+
     console.log('newGeom: ', newGeometry)
     featureT.setGeometry(newGeometry)
     historyRouteIconVector.value.source.changed()

@@ -33,16 +33,15 @@ class TokenService {
     localStorage.removeItem("user")
 
   }
-  checkTokenExpiration(token) {
-    if (token === null) {
+  checkTokenExpiration(exp) {
+    if (exp === null) {
       
       return null
     }
   
     try {
-      const decodedToken = jwt.verify(token, 'YOUR_SECRET_KEY_HERE')
   
-      const tokenExpired = Date.now() >= decodedToken.exp * 1000
+      const tokenExpired = Date.now() >= exp * 1000
   
       return !!(tokenExpired)
     } catch (error) {

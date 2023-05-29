@@ -22,15 +22,16 @@ router.beforeEach((to, from, next) => {
     if(token === null){
       next({ name: 'login' }) // Redirect to the login page
       
-      return
+      return 
     }
     const decoded = jwt_decode(token) 
+    console.log(decoded)
     const tokenExpired = tokenService.checkTokenExpiration(decoded.exp)
-    if( tokenExpired === null && tokenExpired ){
+    console.log(tokenExpired)
+    if( tokenExpired ){
       TokenService.removeUser()
-      next({ name: '/login' }) // Redirect to the login page
+      next({ name: 'login' }) // Redirect to the login page
       
-      return 
     }
    
   }
